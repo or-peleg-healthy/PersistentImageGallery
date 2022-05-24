@@ -15,17 +15,20 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         
         delegate = self
         
-        allowsDocumentCreation = true
+        allowsDocumentCreation = false
         allowsPickingMultipleItems = false
         
-        template = try? FileManager.default.url(
-            for: .applicationSupportDirectory,
-            in: .userDomainMask,
-            appropriateFor: nil,
-            create: true).appendingPathComponent("Untitled.json")
-            if template != nil {
-                allowsDocumentCreation = FileManager.default.createFile(atPath: template!.path, contents: Data())
-            }
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            template = try? FileManager.default.url(
+                for: .applicationSupportDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: true).appendingPathComponent("Untitled.json")
+                if template != nil {
+                    allowsDocumentCreation = FileManager.default.createFile(atPath: template!.path, contents: Data())
+                }
+        }
+        
         // Update the style of the UIDocumentBrowserViewController
         // browserUserInterfaceStyle = .dark
         // view.tintColor = .white

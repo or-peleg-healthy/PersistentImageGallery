@@ -21,6 +21,7 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
         collectionView.addInteraction(UIDropInteraction(delegate: self))
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(pinchToScale(_:)))
         self.collectionView.addGestureRecognizer(pinch)
+        collectionView.dragInteractionEnabled = true
     }
     
     var document: GalleryDocument?
