@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tGE-3h-SMj">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Cgd-bx-umn">
     <device id="ipad12_9rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
@@ -22,14 +22,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="26" y="654"/>
+            <point key="canvasLocation" x="-238" y="654"/>
         </scene>
         <!--Images Collection View Controller-->
         <scene sceneID="6d6-Da-Xli">
             <objects>
                 <collectionViewController id="Ba6-Lr-aFW" customClass="ImagesCollectionViewController" customModule="ImageGalleryProject" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="2EN-DH-2ZH">
-                        <rect key="frame" x="0.0" y="0.0" width="704" height="995.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ykA-0l-1OT">
@@ -75,14 +75,36 @@
                             <outlet property="delegate" destination="Ba6-Lr-aFW" id="chH-P3-RRC"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="JAF-5K-UC5"/>
+                    <navigationItem key="navigationItem" id="JAF-5K-UC5">
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="nwj-4L-ryt">
+                            <connections>
+                                <action selector="save:" destination="Ba6-Lr-aFW" id="j3y-Vc-S1g"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <segue destination="JBU-QN-tiV" kind="showDetail" identifier="Show Image" id="9b7-6B-HWL"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RoA-qN-eUz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="803" y="1390"/>
+            <point key="canvasLocation" x="1356" y="654"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="HYg-av-ziD">
+            <objects>
+                <navigationController id="Cgd-bx-umn" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="zDB-Nn-aEW">
+                        <rect key="frame" x="0.0" y="24" width="1024" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Ba6-Lr-aFW" kind="relationship" relationship="rootViewController" id="3qs-y3-rxm"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vwh-nG-UA1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="589" y="654"/>
         </scene>
         <!--Image View Controller-->
         <scene sceneID="7ZP-lB-WY3">
@@ -139,60 +161,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WYt-Dp-YBM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1658" y="1390"/>
-        </scene>
-        <!--Galleries Table View Controller-->
-        <scene sceneID="glj-mV-J3x">
-            <objects>
-                <tableViewController id="tGE-3h-SMj" customClass="GalleriesTableViewController" customModule="ImageGalleryProject" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="3Td-gE-a3W">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="GalleryCell" id="QG0-pi-hZD" customClass="TextFieldTableViewCell" customModule="ImageGalleryProject" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44.5" width="1024" height="28.5"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QG0-pi-hZD" id="U5L-Tk-PBP">
-                                    <rect key="frame" x="0.0" y="0.0" width="1024" height="28.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Kendrick Gallery" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PIz-pM-bjC">
-                                            <rect key="frame" x="20" y="5" width="106" height="19"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
-                                        </textField>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="PIz-pM-bjC" secondAttribute="bottom" constant="4.5" id="Ldc-JJ-Kv1"/>
-                                        <constraint firstItem="PIz-pM-bjC" firstAttribute="leading" secondItem="U5L-Tk-PBP" secondAttribute="leading" constant="20" symbolic="YES" id="MMk-yt-xFz"/>
-                                        <constraint firstItem="PIz-pM-bjC" firstAttribute="top" secondItem="U5L-Tk-PBP" secondAttribute="top" constant="5" id="Z8m-Gc-ny9"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="textField" destination="PIz-pM-bjC" id="gAV-Tx-QOt"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="tGE-3h-SMj" id="JKP-K5-Hue"/>
-                            <outlet property="delegate" destination="tGE-3h-SMj" id="Rg1-qU-ish"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="XhZ-Hp-siz">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="PPu-YF-Jdr">
-                            <connections>
-                                <action selector="addNewGallery:" destination="tGE-3h-SMj" id="4j8-Ph-d5H"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <segue destination="Ba6-Lr-aFW" kind="showDetail" identifier="Show Image Gallery" id="0ak-w7-8kr"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="34Z-PR-fvR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="803" y="654"/>
+            <point key="canvasLocation" x="2125" y="654"/>
         </scene>
     </scenes>
     <resources>

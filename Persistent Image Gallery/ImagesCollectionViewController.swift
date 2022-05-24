@@ -13,15 +13,46 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
     let defaultURL = URL(string: "https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTQ3NTI2NTg2OTE1MTA0MjM4/kenrick_lamar_photo_by_jason_merritt_getty_images_entertainment_getty_476933160.jpg")
     var gallery: Gallery?
     var chosenImageToEnlarge: URL?
-    
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
+        gallery = Gallery(name: "Untitled")
         collectionView?.dragDelegate = self
         collectionView?.dropDelegate = self
         collectionView.addInteraction(UIDropInteraction(delegate: self))
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(pinchToScale(_:)))
         self.collectionView.addGestureRecognizer(pinch)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if let url = try? FileManager.default.url(
+            for: .documentDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true).appendingPathComponent("Untitled.json") {
+            if let jsonData = try? Data(contentsOf: url) {
+                gallery = Gallery(json: jsonData)
+            }
+        }
+    }
+    
+    @IBAction func save(_ sender: UIBarButtonItem) {
+        if let json = gallery?.json {
+            if let url = try? FileManager.default.url(
+                for: .documentDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: true).appendingPathComponent("Untitled.json") {
+                do {
+                    try json.write(to: url)
+                    print("saved successfully!")
+                } catch let error {
+                    print("couldnt save \(error)")
+                }
+            }
+        }
     }
     
     @objc func pinchToScale(_ sender: UIPinchGestureRecognizer) {

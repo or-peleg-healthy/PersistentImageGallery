@@ -19,7 +19,7 @@ class GalleryDocument: UIDocument {
     override func load(fromContents contents: Any, ofType typeName: String?) throws {
         // Load your document from contents
         if let json = contents as? Data {
-            gallery = Gallery(json: json)
+//            gallery = Gallery(json: json)
         }
     }
 }
