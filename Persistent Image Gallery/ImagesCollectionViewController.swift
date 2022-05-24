@@ -16,14 +16,6 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let url = try? FileManager.default.url(
-            for: .documentDirectory,
-            in: .userDomainMask,
-            appropriateFor: nil,
-            create: true).appendingPathComponent("Untitled.json") {
-                document = GalleryDocument(fileURL: url)
-            }
-//        gallery = Gallery(name: "Untitled")
         collectionView?.dragDelegate = self
         collectionView?.dropDelegate = self
         collectionView.addInteraction(UIDropInteraction(delegate: self))
@@ -39,6 +31,9 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
             if success {
                 self.title = self.document?.localizedName
                 self.gallery = self.document?.gallery
+                if self.gallery == nil {
+                    self.gallery = Gallery(name: "untitled")
+                }
                 collectionView.reloadData()
             }
         }
@@ -53,7 +48,15 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
     
     @IBAction func close(_ sender: UIBarButtonItem) {
         save()
-        document?.close()
+        if document?.gallery != nil {
+            let firstCell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? ImageCollectionViewCell
+            let firstCellImage = firstCell?.cellView.subviews[1] as? UIImageView
+            let image = firstCellImage?.image
+            document?.thumbnail = image
+        }
+        dismiss(animated: true) {
+            self.document?.close()
+        }
     }
     
     @objc func pinchToScale(_ sender: UIPinchGestureRecognizer) {
