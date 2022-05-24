@@ -16,7 +16,14 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        gallery = Gallery(name: "Untitled")
+        if let url = try? FileManager.default.url(
+            for: .documentDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true).appendingPathComponent("Untitled.json") {
+                document = GalleryDocument(fileURL: url)
+            }
+//        gallery = Gallery(name: "Untitled")
         collectionView?.dragDelegate = self
         collectionView?.dropDelegate = self
         collectionView.addInteraction(UIDropInteraction(delegate: self))
@@ -24,35 +31,29 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
         self.collectionView.addGestureRecognizer(pinch)
     }
     
+    var document: GalleryDocument?
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if let url = try? FileManager.default.url(
-            for: .documentDirectory,
-            in: .userDomainMask,
-            appropriateFor: nil,
-            create: true).appendingPathComponent("Untitled.json") {
-            if let jsonData = try? Data(contentsOf: url) {
-                gallery = Gallery(json: jsonData)
+        document?.open() { [self] success in
+            if success {
+                self.title = self.document?.localizedName
+                self.gallery = self.document?.gallery
+                collectionView.reloadData()
             }
         }
     }
     
-    @IBAction func save(_ sender: UIBarButtonItem) {
-        if let json = gallery?.json {
-            if let url = try? FileManager.default.url(
-                for: .documentDirectory,
-                in: .userDomainMask,
-                appropriateFor: nil,
-                create: true).appendingPathComponent("Untitled.json") {
-                do {
-                    try json.write(to: url)
-                    print("saved successfully!")
-                } catch let error {
-                    print("couldnt save \(error)")
-                }
-            }
+    @IBAction func save(_ sender: UIBarButtonItem? = nil) {
+        document?.gallery = gallery
+        if document?.gallery != nil {
+            document?.updateChangeCount(.done)
         }
+    }
+    
+    @IBAction func close(_ sender: UIBarButtonItem) {
+        save()
+        document?.close()
     }
     
     @objc func pinchToScale(_ sender: UIPinchGestureRecognizer) {

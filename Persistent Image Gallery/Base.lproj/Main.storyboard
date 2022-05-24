@@ -22,7 +22,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-238" y="654"/>
+            <point key="canvasLocation" x="589" y="-135"/>
         </scene>
         <!--Images Collection View Controller-->
         <scene sceneID="6d6-Da-Xli">
@@ -76,6 +76,11 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="JAF-5K-UC5">
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="Ek4-9u-Spx">
+                            <connections>
+                                <action selector="close:" destination="Ba6-Lr-aFW" id="bl9-AM-fhr"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="nwj-4L-ryt">
                             <connections>
                                 <action selector="save:" destination="Ba6-Lr-aFW" id="j3y-Vc-S1g"/>
@@ -88,7 +93,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RoA-qN-eUz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1356" y="654"/>
+            <point key="canvasLocation" x="589" y="654"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="HYg-av-ziD">
@@ -104,7 +109,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vwh-nG-UA1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="589" y="654"/>
+            <point key="canvasLocation" x="1356" y="-135"/>
         </scene>
         <!--Image View Controller-->
         <scene sceneID="7ZP-lB-WY3">
@@ -161,7 +166,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WYt-Dp-YBM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2125" y="654"/>
+            <point key="canvasLocation" x="1356" y="654"/>
         </scene>
     </scenes>
     <resources>
