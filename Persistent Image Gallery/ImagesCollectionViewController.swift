@@ -13,7 +13,6 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
     let defaultURL = URL(string: "https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTQ3NTI2NTg2OTE1MTA0MjM4/kenrick_lamar_photo_by_jason_merritt_getty_images_entertainment_getty_476933160.jpg")
     var gallery: Gallery?
     var chosenImageToEnlarge: URL?
-        
     @IBOutlet weak var trashCan: UIBarButtonItem!
     
     override func viewDidLoad() {
@@ -50,7 +49,7 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
             if let firstCell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? ImageCollectionViewCell {
                 if let firstCellImage = firstCell.cellView.subviews[1] as? UIImageView {
                     let image = firstCellImage.image
-                        document?.thumbnail = image
+                    document?.thumbnail = image
                 }
             }
         }
@@ -66,24 +65,6 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
         }
     }
     
-    @IBAction func close(_ sender: UIBarButtonItem) {
-        save()
-        if document?.gallery != nil {
-            if let firstCell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? ImageCollectionViewCell {
-                if let firstCellImage = firstCell.cellView.subviews[1] as? UIImageView {
-                    let image = firstCellImage.image
-                    document?.thumbnail = image
-                }
-            }
-        }
-        dismiss(animated: true) {
-            if self.document!.gallery!.images.isEmpty {
-                print("empty")
-                self.document?.thumbnail = nil
-            }
-            self.document?.close()
-        }
-    }
     
     @IBAction func edit(_ sender: Any) {
         isEditing.toggle()
