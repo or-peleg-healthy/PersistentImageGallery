@@ -14,6 +14,8 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
     var gallery: Gallery?
     var chosenImageToEnlarge: URL?
         
+    @IBOutlet weak var trashCan: UIBarButtonItem!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.dragDelegate = self
@@ -22,6 +24,7 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(pinchToScale(_:)))
         self.collectionView.addGestureRecognizer(pinch)
         collectionView.dragInteractionEnabled = true
+        collectionView.allowsMultipleSelection = true
     }
     
     var document: GalleryDocument?
@@ -50,13 +53,43 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
     @IBAction func close(_ sender: UIBarButtonItem) {
         save()
         if document?.gallery != nil {
-            let firstCell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? ImageCollectionViewCell
-            let firstCellImage = firstCell?.cellView.subviews[1] as? UIImageView
-            let image = firstCellImage?.image
-            document?.thumbnail = image
+            if let firstCell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? ImageCollectionViewCell {
+                if let firstCellImage = firstCell.cellView.subviews[1] as? UIImageView {
+                    let image = firstCellImage.image
+                        document?.thumbnail = image
+                }
+            }
         }
         dismiss(animated: true) {
             self.document?.close()
+        }
+    }
+    
+    @IBAction func edit(_ sender: Any) {
+        isEditing.toggle()
+        trashCan.isEnabled = false
+    }
+    
+    @IBAction func deleteItem(_ sender: Any) {
+        var items: [Int] = []
+        var indexPaths: [IndexPath] = []
+        for indexPath in collectionView.indexPathsForVisibleItems {
+            if let imageCollectionViewCell = collectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell {
+                if imageCollectionViewCell.isSelected {
+                    items.append(indexPath.item)
+                    indexPaths.append(indexPath)
+                }
+            }
+        }
+        if items != [] {
+            items = items.sorted().reversed()
+              for item in items {
+                  gallery?.images.remove(at: item)
+                  gallery?.aspectRatios.remove(at: item)
+              }
+              collectionView.deleteItems(at: indexPaths)
+              trashCan.isEnabled = false
+            isEditing = false
         }
     }
     
@@ -110,11 +143,28 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
     // MARK: - Collection View Navigation
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.item < (gallery?.images.count) ?? 0 {
-            chosenImageToEnlarge = gallery?.images[indexPath.item]
-            performSegue(withIdentifier: "Show Image", sender: self)
+        if !isEditing {
+            trashCan.isEnabled = false
+            if indexPath.item < (gallery?.images.count) ?? 0 {
+                chosenImageToEnlarge = gallery?.images[indexPath.item]
+                performSegue(withIdentifier: "Show Image", sender: self)
+            }
+        } else {
+            trashCan.isEnabled = true
         }
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        if isEditing {
+            let item = collectionView.cellForItem(at: indexPath)
+            if item!.isSelected {
+                collectionView.deselectItem(at: indexPath, animated: true)
+                return false
+            }
+        }
+        return true
+    }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? ImageViewController {
@@ -223,6 +273,17 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
                     return
                 }
             }
+        }
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        collectionView.allowsMultipleSelection = editing
+        let indexPaths = collectionView.indexPathsForVisibleItems
+        for indexPath in indexPaths {
+            let cell = collectionView.cellForItem(at: indexPath) as! ImageCollectionViewCell
+            cell.isInEditingMode = editing
+            cell.isSelected = false
         }
     }
 }

@@ -13,10 +13,9 @@ class ImageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var cellView: UIView!
     
-
     func configure(with imageURL: URL) {
         for subview in cellView.subviews {
-            if subview as? UIActivityIndicatorView != nil {
+            if subview as? UIActivityIndicatorView != nil || subview as? UILabel != nil {
                 continue
             }
             subview.removeFromSuperview()
@@ -31,6 +30,31 @@ class ImageCollectionViewCell: UICollectionViewCell {
                 let imageView = UIImageView(image: image)
                 imageView.frame = self.cellView.frame
                 self.cellView.addSubview(imageView)
+            }
+        }
+    }
+    
+    var isInEditingMode: Bool = false {
+        didSet {
+            if isInEditingMode {
+                self.layer.borderColor = UIColor.blue.cgColor
+                self.layer.borderWidth = 3
+            } else {
+                self.layer.borderColor = UIColor.clear.cgColor
+                self.layer.borderWidth = 0
+            }
+        }
+    }
+
+    override var isSelected: Bool {
+        didSet {
+            if isInEditingMode {
+                if isSelected {
+                    self.layer.borderColor = UIColor.green.cgColor
+                    self.layer.borderWidth = 3
+                } else {
+                    self.layer.borderColor = UIColor.blue.cgColor
+                }
             }
         }
     }
