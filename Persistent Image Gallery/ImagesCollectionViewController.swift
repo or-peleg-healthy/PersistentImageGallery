@@ -43,6 +43,22 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
         }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        save()
+        if document?.gallery != nil {
+            if let firstCell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? ImageCollectionViewCell {
+                if let firstCellImage = firstCell.cellView.subviews[1] as? UIImageView {
+                    let image = firstCellImage.image
+                        document?.thumbnail = image
+                }
+            }
+        }
+        dismiss(animated: true) {
+            self.document?.close()
+        }
+    }
+    
     @IBAction func save(_ sender: UIBarButtonItem? = nil) {
         document?.gallery = gallery
         if document?.gallery != nil {
@@ -56,11 +72,15 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
             if let firstCell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? ImageCollectionViewCell {
                 if let firstCellImage = firstCell.cellView.subviews[1] as? UIImageView {
                     let image = firstCellImage.image
-                        document?.thumbnail = image
+                    document?.thumbnail = image
                 }
             }
         }
         dismiss(animated: true) {
+            if self.document!.gallery!.images.isEmpty {
+                print("empty")
+                self.document?.thumbnail = nil
+            }
             self.document?.close()
         }
     }
@@ -128,6 +148,13 @@ class ImagesCollectionViewController: UICollectionViewController,  UICollectionV
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if document!.hasUnsavedChanges {
+            document?.autosave(completionHandler: { [self]_ in
+                if gallery != nil {
+                    document?.updateChangeCount(.done)
+                }
+            })
+        }
         var cell = UICollectionViewCell()
         if let imageCell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? ImageCollectionViewCell {
             if gallery != nil, indexPath.item < ((gallery?.images.count)!) {

@@ -77,11 +77,6 @@
                     </collectionView>
                     <navigationItem key="navigationItem" id="JAF-5K-UC5">
                         <leftBarButtonItems>
-                            <barButtonItem systemItem="done" id="Ek4-9u-Spx">
-                                <connections>
-                                    <action selector="close:" destination="Ba6-Lr-aFW" id="bl9-AM-fhr"/>
-                                </connections>
-                            </barButtonItem>
                             <barButtonItem systemItem="trash" id="iP8-LA-po4">
                                 <connections>
                                     <action selector="deleteItem:" destination="Ba6-Lr-aFW" id="Vbs-OM-Gn4"/>
@@ -93,11 +88,6 @@
                                 </connections>
                             </barButtonItem>
                         </leftBarButtonItems>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="nwj-4L-ryt">
-                            <connections>
-                                <action selector="save:" destination="Ba6-Lr-aFW" id="j3y-Vc-S1g"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="trashCan" destination="iP8-LA-po4" id="uiy-8w-vkq"/>
